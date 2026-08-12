@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>Hyderabadi Urdu</title>
+<meta name="theme-color" content="#1b6b5a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hyd Urdu">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-32.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-title" id="topbarTitle">Hyderabadi Urdu</div>
+</header>
+
+<main id="app">
+
+  <!-- HOME -->
+  <section class="screen" id="screen-home">
+    <div class="card home-hero">
+      <div class="home-greeting" id="homeGreeting">Adaab!</div>
+      <div class="home-sub">Let's get some practice in.</div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num" id="statDue">0</div>
+        <div class="stat-label">due now</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="statStreak">0</div>
+        <div class="stat-label">day streak</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="statMastered">0</div>
+        <div class="stat-label">mastered</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-big" id="startReviewBtn">Start Review</button>
+
+    <div class="quick-links">
+      <button class="btn btn-secondary" data-nav="browse">Browse Topics</button>
+      <button class="btn btn-secondary" data-nav="add">Add a Word</button>
+    </div>
+
+    <div class="card note-card">
+      <strong>Heads up:</strong> the built-in phrases are a general Hyderabadi/Dakhini
+      starter set — dialect varies by family. When something sounds off, use
+      <em>Add a Word</em> to fix it with what your own family actually says. That's
+      the fastest way to make this genuinely yours.
+    </div>
+  </section>
+
+  <!-- REVIEW -->
+  <section class="screen" id="screen-review">
+    <div id="reviewProgress" class="review-progress"></div>
+
+    <div id="reviewEmpty" class="card empty-state" hidden>
+      <div class="empty-emoji">✅</div>
+      <p>Nothing due right now. Nice work.</p>
+      <button class="btn btn-secondary" data-nav="home">Back Home</button>
+    </div>
+
+    <div id="reviewCardWrap" hidden>
+      <div class="flashcard" id="flashcard">
+        <div class="flashcard-category" id="cardCategory"></div>
+        <div class="flashcard-hu" id="cardHu"></div>
+        <button class="btn btn-audio" id="hearBtn" aria-label="Hear pronunciation">🔊 Hear it</button>
+
+        <div id="cardBack" hidden>
+          <div class="flashcard-en" id="cardEn"></div>
+          <div class="flashcard-note" id="cardNote"></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-big" id="revealBtn">Show Meaning</button>
+
+      <div class="rate-row" id="rateRow" hidden>
+        <button class="btn rate-btn rate-again" data-rate="again">Again</button>
+        <button class="btn rate-btn rate-good" data-rate="good">Good</button>
+        <button class="btn rate-btn rate-easy" data-rate="easy">Easy</button>
+      </div>
+    </div>
+
+    <div id="reviewDone" class="card empty-state" hidden>
+      <div class="empty-emoji">🎉</div>
+      <p id="reviewDoneText">Session complete.</p>
+      <button class="btn btn-secondary" data-nav="home">Back Home</button>
+    </div>
+  </section>
+
+  <!-- BROWSE -->
+  <section class="screen" id="screen-browse">
+    <div id="categoryList"></div>
+  </section>
+
+  <!-- CATEGORY DETAIL -->
+  <section class="screen" id="screen-category">
+    <button class="btn btn-link" data-nav="browse">&larr; All Topics</button>
+    <h2 id="categoryTitle"></h2>
+    <p class="category-blurb" id="categoryBlurb"></p>
+    <button class="btn btn-primary" id="practiceTopicBtn">Practice This Topic</button>
+    <div id="categoryCardList" class="mini-card-list"></div>
+  </section>
+
+  <!-- ADD WORD -->
+  <section class="screen" id="screen-add">
+    <h2>Add Your Own</h2>
+    <p class="category-blurb">Heard something from family? Log it here — your own words, spelled how you'd say them.</p>
+
+    <form id="addForm">
+      <label class="field-label" for="inputHu">Hyderabadi phrase (spelled phonetically)</label>
+      <input class="field-input" id="inputHu" type="text" required placeholder="e.g. Kya haal chaal">
+
+      <label class="field-label" for="inputEn">What it means</label>
+      <input class="field-input" id="inputEn" type="text" required placeholder="e.g. What's up / how are things">
+
+      <label class="field-label" for="inputNote">Note (optional)</label>
+      <input class="field-input" id="inputNote" type="text" placeholder="e.g. Who says this, when to use it">
+
+      <button class="btn btn-primary btn-big" type="submit">Save Word</button>
+    </form>
+
+    <h3 class="my-words-heading">My Words (<span id="myWordsCount">0</span>)</h3>
+    <div id="myWordsList" class="mini-card-list"></div>
+  </section>
+
+  <!-- STATS -->
+  <section class="screen" id="screen-stats">
+    <h2>Progress</h2>
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num" id="statsStreak">0</div>
+        <div class="stat-label">day streak</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="statsTotalReviews">0</div>
+        <div class="stat-label">total reviews</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="statsTotalCards">0</div>
+        <div class="stat-label">total cards</div>
+      </div>
+    </div>
+    <h3 class="my-words-heading">By Topic</h3>
+    <div id="statsByCategory"></div>
+  </section>
+
+</main>
+
+<nav class="tabbar">
+  <button class="tab-btn" data-nav="home"><span class="tab-icon">🏠</span><span>Home</span></button>
+  <button class="tab-btn" data-nav="review"><span class="tab-icon">🔁</span><span>Review</span></button>
+  <button class="tab-btn" data-nav="browse"><span class="tab-icon">📚</span><span>Topics</span></button>
+  <button class="tab-btn" data-nav="add"><span class="tab-icon">➕</span><span>Add</span></button>
+  <button class="tab-btn" data-nav="stats"><span class="tab-icon">📈</span><span>Stats</span></button>
+</nav>
+
+<script src="content.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
